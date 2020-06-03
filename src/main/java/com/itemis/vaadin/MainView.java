@@ -1,15 +1,8 @@
 package com.itemis.vaadin;
 
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
-
-import io.github.ciesielskis.AceEditor;
-import io.github.ciesielskis.AceMode;
-import io.github.ciesielskis.AceTheme;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * A sample Vaadin view class.
@@ -44,9 +37,9 @@ public class MainView extends VerticalLayout {
      */
     public MainView() {
     	
-    	AceEditor aceEditor = new AceEditor();
-		aceEditor.setTheme(AceTheme.github);
-		aceEditor.setMode(AceMode.java);
+    	XtextAceEditor aceEditor = new XtextAceEditor();
+		aceEditor.setTheme("github");
+		aceEditor.setMode("java");
 
 		aceEditor.setSoftTabs(false);
 		aceEditor.setTabSize(4);

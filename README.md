@@ -1,4 +1,21 @@
-# Project Base for Vaadin and Spring Boot
+# Ace-Editor integration into vaadin - spring boot project
+
+This project was setup using https://vaadin.com/start/latest/project-base
+
+## build
+
+`mvn compile`
+`mvn verify -Pit`
+
+## run
+
+`mvn spring-boot:run`
+
+## Import into eclipse
+
+(see below)
+
+# Project Base for Vaadin and Spring Boot (original README.md from hereon)
 
 This is an example project that can be used as a starting point to create your own Vaadin application with Spring Boot.
 It contains all the necessary configuration and some placeholder files to get you started.
