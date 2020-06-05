@@ -19,12 +19,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
+// import '@vaadin/flow-frontend/xtext/xtext-ace.js';
 
 import 'ace-builds/src-noconflict/ace.js';
 import 'ace-builds/src-noconflict/ext-language_tools.js';
 import 'ace-builds/src-noconflict/snippets/snippets.js';
 
 const CDN = 'https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-min-noconflict';
+
+import { require, define } from "../xtext/require.js"
+
 
 
 var editorFocus = function() { 
@@ -36,8 +40,6 @@ var editorFocus = function() {
   this.textInput.$focusScroll = "browser"
   this.textInput.focus();
 };
-
-
 
 class AceWidget extends PolymerElement {
   static get template() {
@@ -149,28 +151,63 @@ class AceWidget extends PolymerElement {
     super.connectedCallback();
 
     let baseUrl = this.baseUrl || `${this.importPath}../../ace-builds/src-min-noconflict/`
+    let xtextBaseUrl = `../node_modules/@vaadin/flow-frontend/xtext`
 
     // In non-minified mode, imports are parallelized, and sometimes `ext-language_tools.js` and
     // `snippets.js` arrive before `ace.js` is ready. I am adding some tests here with dynamic imports 
     // to fix thaty
+    console.debug("import ace");
     if (!ace) {
       await import(`${baseUrl}ace.js`);
     }
+    console.debug("import ace ext-language-tools");
     if (!ace.require("ace/ext/language_tools")) {
       await import(`${baseUrl}ext-language_tools.js`);
     }
+    
+    // use xtext functions here
+    // console.debug("import xtext");
+    // if (!xtext) {
+       await import(`@vaadin/flow-frontend/xtext/xtext-ace.js`);
+    // }
     
     // console.debug("[ace-widget] connectedCallback")
     let div = this.$.editor;
     div.style.width = '100%';
     div.style.height = '100%';
-    this.editor = ace.edit(div);
-    this.editor.focus = editorFocus;
-    //this.init();
+    // this.editor = ace.edit(div);
 
-    this.dispatchEvent(new CustomEvent('editor-ready', { detail: {value: this.editor, oldValue: null}}));
-    // console.debug("[ace-widget] connectedCallback done, initializing")
-    this.initializeEditor();
+    let config = {
+      baseUrl: `${CDN}`,
+      serviceUrl: 'http://localhost:8081/xtext-service',
+      xtextLang: 'mydsl',
+      parent: div,
+      syntaxDefinition: 'none',
+      enableCors: true, // in addition cors had to be handled in server component (see ServerLauncher.xtend)
+      // dirtyElement: document.getElementsByClassName(tabId),
+      loadFromServer: false,
+      sendFullText: true,
+      resourceId: 'some.mydsl',
+      // syntaxDefinition: syntaxDefinitionFilePath,
+      // enableOccurrencesService: isKnownLanguage,
+      // enableValidationService: isKnownLanguage,
+      enableSaveAction: false // don't want the default xtext-save action
+    };
+    require(["xtext/xtext-ace"], xtext => {
+
+	    ace.config.set('basePath', CDN);
+    	ace.config.set('modePath', CDN);
+    	ace.config.set('themePath', CDN);
+    	ace.config.set('workerPath', CDN);
+
+
+        this.editor = xtext.createEditor(config);
+	    this.editor.focus = editorFocus;
+
+	    this.dispatchEvent(new CustomEvent('editor-ready', { detail: {value: this.editor, oldValue: null}}));
+    	// console.debug("[ace-widget] connectedCallback done, initializing")
+    	this.initializeEditor();
+    });
   }
 
   initializeEditor() {
@@ -384,6 +421,7 @@ class AceWidget extends PolymerElement {
     this.shadowRoot.appendChild(lightStyle.cloneNode(true));
   }
 }
+
 
 window.customElements.define(AceWidget.is, AceWidget);
 

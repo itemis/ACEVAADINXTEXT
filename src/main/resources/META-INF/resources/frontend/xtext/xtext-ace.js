@@ -1,15 +1,61 @@
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
+
+import { define, require } from "./require.js"
 
 import 'ace-builds/src-noconflict/ace.js';
-import 'ace-builds/src-noconflict/ext-language_tools.js';
 import 'ace-builds/src-noconflict/snippets/snippets.js';
+import 'ace-builds/src-noconflict/mode-java.js';
+import 'ace-builds/src-noconflict/mode-text.js';
+
+import 'ace-builds/src-noconflict/ext-beautify.js';
+import 'ace-builds/src-noconflict/ext-code_lens.js';
+import 'ace-builds/src-noconflict/ext-elastic_tabstops_lite.js';
+import 'ace-builds/src-noconflict/ext-emmet.js';
+import 'ace-builds/src-noconflict/ext-error_marker.js';
+import 'ace-builds/src-noconflict/ext-keybinding_menu.js';
+import 'ace-builds/src-noconflict/ext-language_tools.js';
+import 'ace-builds/src-noconflict/ext-linking.js';
+import 'ace-builds/src-noconflict/ext-modelist.js';
+import 'ace-builds/src-noconflict/ext-options.js';
+import 'ace-builds/src-noconflict/ext-prompt.js';
+import 'ace-builds/src-noconflict/ext-rtl.js';
+import 'ace-builds/src-noconflict/ext-searchbox.js';
+import 'ace-builds/src-noconflict/ext-settings_menu.js';
+import 'ace-builds/src-noconflict/ext-spellcheck.js';
+import 'ace-builds/src-noconflict/ext-split.js';
+import 'ace-builds/src-noconflict/ext-static_highlight.js';
+import 'ace-builds/src-noconflict/ext-statusbar.js';
+import 'ace-builds/src-noconflict/ext-textarea.js';
+import 'ace-builds/src-noconflict/ext-themelist.js';
+import 'ace-builds/src-noconflict/ext-whitespace.js';
+
+
+import { jQuery } from "./jquery.js";
+
+// require can be configured, but cannot resolve webpack-internal protocol!
+//require.config({
+//    baseUrl: "webpack-internal://node_modules",
+//    paths: {
+//        "ace/ace": "ace-builds/src-noconflict/ace",
+//        "ace/ext/language_tools" : "ace-builds/src-noconflict/ext-language_tools",
+//        "jquery": "jquery/src/jquery"
+//    },
+//    waitSeconds: 15
+//});
+
+// Modifications done to the original file:
+// * added the import headers
+// * remove the following required modules from the define calls:
+//   ace/ace, ace/ext/language_tools and jquery
+// * removed require('ace/range'), using Range directly
+// * added some functions to the resulting Range Marker object (clipRows)
 
 
 define('xtext/compatibility',[], function() {
@@ -68,27 +114,32 @@ define('xtext/compatibility',[], function() {
 });
 
 /*******************************************************************************
- * Copyright (c) 2015, 2017 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015, 2017 itemis AG (http://www.itemis.eu) and others. This
+ * program and the accompanying materials are made available under the terms of
+ * the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/XtextService',['jquery'], function(jQuery) {
+define('xtext/services/XtextService',[
+	//'jquery'
+	], function(
+//			jQuery
+			) {
 	
 	var globalState = {};
 	
 	/**
-	 * Generic service implementation that can serve as superclass for specialized services.
+	 * Generic service implementation that can serve as superclass for
+	 * specialized services.
 	 */
 	function XtextService() {};
 
 	/**
-	 * Initialize the request metadata for this service class. Two variants:
-	 *  - initialize(serviceUrl, serviceType, resourceId, updateService)
-	 *  - initialize(xtextServices, serviceType)
+	 * Initialize the request metadata for this service class. Two variants: -
+	 * initialize(serviceUrl, serviceType, resourceId, updateService) -
+	 * initialize(xtextServices, serviceType)
 	 */
 	XtextService.prototype.initialize = function() {
 		this._serviceType = arguments[1];
@@ -283,7 +334,8 @@ define('xtext/services/XtextService',['jquery'], function(jQuery) {
 		}
 		
 		if (needsSession && globalState._initPending) {
-			// We have to wait until the initial request has finished to make sure the client has
+			// We have to wait until the initial request has finished to make
+			// sure the client has
 			// received a valid session id
 			if (!globalState._waitingRequests)
 				globalState._waitingRequests = [];
@@ -312,8 +364,9 @@ define('xtext/services/XtextService',['jquery'], function(jQuery) {
 	}
 	
 	/**
-	 * Use this in case of a conflict before retrying the service invocation. If the number
-	 * of retries exceeds the limit, an error is reported and the function returns false.
+	 * Use this in case of a conflict before retrying the service invocation. If
+	 * the number of retries exceeds the limit, an error is reported and the
+	 * function returns false.
 	 */
 	XtextService.prototype._increaseRecursionCount = function(editorContext) {
 		if (this._recursionCount === undefined)
@@ -349,18 +402,23 @@ define('xtext/services/XtextService',['jquery'], function(jQuery) {
 });
 
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/LoadResourceService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/LoadResourceService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 	
 	/**
-	 * Service class for loading resources. The resulting text is passed to the editor context.
+	 * Service class for loading resources. The resulting text is passed to the
+	 * editor context.
 	 */
 	function LoadResourceService(serviceUrl, resourceId, revert) {
 		this.initialize(serviceUrl, revert ? 'revert' : 'load', resourceId);
@@ -391,15 +449,19 @@ define('xtext/services/LoadResourceService',['xtext/services/XtextService', 'jqu
 	return LoadResourceService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/SaveResourceService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/SaveResourceService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+//			, jQuery
+			) {
 	
 	/**
 	 * Service class for saving resources.
@@ -423,15 +485,19 @@ define('xtext/services/SaveResourceService',['xtext/services/XtextService', 'jqu
 	return SaveResourceService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/HighlightingService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/HighlightingService',['xtext/services/XtextService'
+//	, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 	
 	/**
 	 * Service class for semantic highlighting.
@@ -456,15 +522,19 @@ define('xtext/services/HighlightingService',['xtext/services/XtextService', 'jqu
 	return HighlightingService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/ValidationService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/ValidationService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 	
 	/**
 	 * Service class for validation.
@@ -489,21 +559,26 @@ define('xtext/services/ValidationService',['xtext/services/XtextService', 'jquer
 	return ValidationService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/UpdateService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/UpdateService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 	
 	/**
 	 * Service class for updating the server-side representation of a resource.
-	 * This service only makes sense with a stateful server, where an update request is sent
-	 * after each modification. This can greatly improve response times compared to the
-	 * stateless alternative, where the full text content is sent with each service request.
+	 * This service only makes sense with a stateful server, where an update
+	 * request is sent after each modification. This can greatly improve
+	 * response times compared to the stateless alternative, where the full text
+	 * content is sent with each service request.
 	 */
 	function UpdateService(serviceUrl, resourceId) {
 		this.initialize(serviceUrl, 'update', resourceId, this);
@@ -513,11 +588,10 @@ define('xtext/services/UpdateService',['xtext/services/XtextService', 'jquery'],
 	UpdateService.prototype = new XtextService();
 
 	/**
-	 * Compute a delta between two versions of a text. If a difference is found, the result
-	 * contains three properties:
-	 *   deltaText - the text to insert into s1
-	 *   deltaOffset - the text insertion offset
-	 *   deltaReplaceLength - the number of characters that shall be replaced by the inserted text
+	 * Compute a delta between two versions of a text. If a difference is found,
+	 * the result contains three properties: deltaText - the text to insert into
+	 * s1 deltaOffset - the text insertion offset deltaReplaceLength - the
+	 * number of characters that shall be replaced by the inserted text
 	 */
 	UpdateService.prototype.computeDelta = function(s1, s2, result) {
 		var start = 0, s1length = s1.length, s2length = s2.length;
@@ -608,7 +682,8 @@ define('xtext/services/UpdateService',['xtext/services/XtextService', 'jquery'],
 			
 			success: function(result) {
 				if (result.conflict) {
-					// The server has lost its session state and the resource is loaded from the server
+					// The server has lost its session state and the resource is
+					// loaded from the server
 					if (knownServerState.text !== undefined) {
 						delete knownServerState.updateInProgress;
 						delete knownServerState.text;
@@ -628,7 +703,8 @@ define('xtext/services/UpdateService',['xtext/services/XtextService', 'jquery'],
 			
 			error: function(xhr, textStatus, errorThrown) {
 				if (xhr.status == 404 && !params.loadFromServer && knownServerState.text !== undefined) {
-					// The server has lost its session state and the resource is not loaded from the server
+					// The server has lost its session state and the resource is
+					// not loaded from the server
 					delete knownServerState.updateInProgress;
 					delete knownServerState.text;
 					delete knownServerState.stateId;
@@ -648,19 +724,23 @@ define('xtext/services/UpdateService',['xtext/services/XtextService', 'jquery'],
 	return UpdateService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/ContentAssistService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/ContentAssistService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 
 	/**
-	 * Service class for content assist proposals. The proposals are returned as promise of
-	 * a Deferred object.
+	 * Service class for content assist proposals. The proposals are returned as
+	 * promise of a Deferred object.
 	 */
 	function ContentAssistService(serviceUrl, resourceId, updateService) {
 		this.initialize(serviceUrl, 'assist', resourceId, updateService);
@@ -718,7 +798,8 @@ define('xtext/services/ContentAssistService',['xtext/services/XtextService', 'jq
 			
 			success: function(result) {
 				if (result.conflict) {
-					// The server has lost its session state and the resource is loaded from the server
+					// The server has lost its session state and the resource is
+					// loaded from the server
 					if (self._increaseRecursionCount(editorContext)) {
 						if (onComplete) {
 							delete knownServerState.updateInProgress;
@@ -753,7 +834,8 @@ define('xtext/services/ContentAssistService',['xtext/services/XtextService', 'jq
 			
 			error: function(xhr, textStatus, errorThrown) {
 				if (onComplete && xhr.status == 404 && !params.loadFromServer && knownServerState.text !== undefined) {
-					// The server has lost its session state and the resource is not loaded from the server
+					// The server has lost its session state and the resource is
+					// not loaded from the server
 					delete knownServerState.updateInProgress;
 					delete knownServerState.text;
 					delete knownServerState.stateId;
@@ -781,15 +863,19 @@ define('xtext/services/ContentAssistService',['xtext/services/XtextService', 'jq
 });
 
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/HoverService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/HoverService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 	
 	/**
 	 * Service class for hover information.
@@ -801,7 +887,8 @@ define('xtext/services/HoverService',['xtext/services/XtextService', 'jquery'], 
 	HoverService.prototype = new XtextService();
 
 	HoverService.prototype._initServerData = function(serverData, editorContext, params) {
-		// In order to display hover info for a selected completion proposal while the content
+		// In order to display hover info for a selected completion proposal
+		// while the content
 		// assist popup is shown, the selected proposal is passed as parameter
 		if (params.proposal && params.proposal.proposal)
 			serverData.proposal = params.proposal.proposal;
@@ -840,15 +927,19 @@ define('xtext/services/HoverService',['xtext/services/XtextService', 'jquery'], 
 	return HoverService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/OccurrencesService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/OccurrencesService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 	
 	/**
 	 * Service class for marking occurrences.
@@ -879,15 +970,19 @@ define('xtext/services/OccurrencesService',['xtext/services/XtextService', 'jque
 	return OccurrencesService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
-define('xtext/services/FormattingService',['xtext/services/XtextService', 'jquery'], function(XtextService, jQuery) {
+define('xtext/services/FormattingService',['xtext/services/XtextService'
+	//, 'jquery'
+	], function(XtextService
+			//, jQuery
+			) {
 	
 	/**
 	 * Service class for formatting text.
@@ -910,7 +1005,8 @@ define('xtext/services/FormattingService',['xtext/services/XtextService', 'jquer
 	};
 	
 	FormattingService.prototype._processResult = function(result, editorContext) {
-		// The text update may be asynchronous, so we have to compute the new text ourselves
+		// The text update may be asynchronous, so we have to compute the new
+		// text ourselves
 		var newText;
 		if (result.replaceRegion) {
 			var fullText = editorContext.getText();
@@ -931,16 +1027,16 @@ define('xtext/services/FormattingService',['xtext/services/XtextService', 'jquer
 	return FormattingService;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 
 define('xtext/ServiceBuilder',[
-    'jquery',
+//    'jquery',
     'xtext/services/XtextService',
 	'xtext/services/LoadResourceService',
 	'xtext/services/SaveResourceService',
@@ -951,7 +1047,9 @@ define('xtext/ServiceBuilder',[
 	'xtext/services/HoverService',
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
-], function(jQuery, XtextService, LoadResourceService, SaveResourceService, HighlightingService,
+], function(
+		//jQuery, 
+		XtextService, LoadResourceService, SaveResourceService, HighlightingService,
 		ValidationService, UpdateService, ContentAssistService, HoverService, OccurrencesService,
 		FormattingService) {
 	
@@ -1185,7 +1283,8 @@ define('xtext/ServiceBuilder',[
 	}
 	
 	/**
-	 * Merge all properties of the given parent element with the given default options.
+	 * Merge all properties of the given parent element with the given default
+	 * options.
 	 */
 	ServiceBuilder.mergeParentOptions = function(parent, defaultOptions) {
 		var options = ServiceBuilder.copy(defaultOptions);
@@ -1205,18 +1304,19 @@ define('xtext/ServiceBuilder',[
 	return ServiceBuilder;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
 define('xtext/AceEditorContext',[], function() {
 	
 	/**
-	 * An editor context mediates between the Xtext services and the Ace editor framework.
+	 * An editor context mediates between the Xtext services and the Ace editor
+	 * framework.
 	 */
 	function AceEditorContext(editor) {
 		this._editor = editor;
@@ -1267,8 +1367,8 @@ define('xtext/AceEditorContext',[], function() {
 				var document = session.getDocument();
 				var startPos = document.indexToPosition(start);
 				var endPos = document.indexToPosition(end);
-				var mRange = require('ace/range');
-				return session.getTextRange(new mRange.Range(startPos.row, startPos.column, endPos.row, endPos.column));
+				// var mRange = require('ace/range');
+				return session.getTextRange(new /*mRange.*/Range(startPos.row, startPos.column, endPos.row, endPos.column));
 			} else {
 				return session.getValue();
 			}
@@ -1305,7 +1405,7 @@ define('xtext/AceEditorContext',[], function() {
 				var document = this._editor.getSession().getDocument();
 				var startPos = document.indexToPosition(selection.start);
 				var endPos = document.indexToPosition(selection.end);
-				this._editor.selection.setSelectionRange(new mRange.Range(startPos.row, startPos.column, endPos.row, endPos.column));
+				this._editor.selection.setSelectionRange(new /*mRange.*/Range(startPos.row, startPos.column, endPos.row, endPos.column));
 			}
 		},
 		
@@ -1319,8 +1419,8 @@ define('xtext/AceEditorContext',[], function() {
 			var startPos = document.indexToPosition(start);
 			var endPos = document.indexToPosition(end);
 			var cursorPos = this._editor.getCursorPosition();
-			var mRange = require('ace/range');
-			session.replace(new mRange.Range(startPos.row, startPos.column, endPos.row, endPos.column), text);
+			// var mRange = require('ace/range');
+			session.replace(new /*mRange.*/Range(startPos.row, startPos.column, endPos.row, endPos.column), text);
 			this._editor.moveCursorToPosition(cursorPos);
 			this._editor.clearSelection();
 		}
@@ -1330,92 +1430,80 @@ define('xtext/AceEditorContext',[], function() {
 	return AceEditorContext;
 });
 /*******************************************************************************
- * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License 2.0 which is available at
+ * Copyright (c) 2015 itemis AG (http://www.itemis.eu) and others. This program
+ * and the accompanying materials are made available under the terms of the
+ * Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
- *
+ * 
  * SPDX-License-Identifier: EPL-2.0
- *******************************************************************************/
+ ******************************************************************************/
 
 /*
- * Use `createEditor(options)` to create an Xtext editor. You can specify options either
- * through the function parameter or through `data-editor-x` attributes, where x is an
- * option name with camelCase converted to hyphen-separated.
- * The following options are available:
- *
- * baseUrl = "/" {String}
- *     The path segment where the Xtext service is found; see serviceUrl option.
- * contentType {String}
- *     The content type included in requests to the Xtext server.
- * dirtyElement {String | DOMElement}
- *     An element into which the dirty status class is written when the editor is marked dirty;
- *     it can be either a DOM element or an ID for a DOM element.
- * dirtyStatusClass = 'dirty' {String}
- *     A CSS class name written into the dirtyElement when the editor is marked dirty.
- * document {Document}
- *     The document; if not specified, the global document is used.
- * enableContentAssistService = true {Boolean}
- *     Whether content assist should be enabled.
- * enableFormattingAction = false {Boolean}
- *     Whether the formatting action should be bound to the standard keystroke ctrl+shift+f / cmd+shift+f.
- * enableFormattingService = true {Boolean}
- *     Whether text formatting should be enabled.
- * enableGeneratorService = true {Boolean}
- *     Whether code generation should be enabled (must be triggered through JavaScript code).
- * enableOccurrencesService = true {Boolean}
- *     Whether marking occurrences should be enabled.
- * enableSaveAction = false {Boolean}
- *     Whether the save action should be bound to the standard keystroke ctrl+s / cmd+s.
- * enableValidationService = true {Boolean}
- *     Whether validation should be enabled.
- * loadFromServer = true {Boolean}
- *     Whether to load the editor content from the server.
- * parent = 'xtext-editor' {String | DOMElement}
- *     The parent element for the view; it can be either a DOM element or an ID for a DOM element.
- * parentClass = 'xtext-editor' {String}
- *     If the 'parent' option is not given, this option is used to find elements that match the given class name.
- * position {String}
- *     If this option is set, the 'position' CSS attribute of the created editor is set accordingly.
- * resourceId {String}
- *     The identifier of the resource displayed in the text editor; this option is sent to the server to
- *     communicate required information on the respective resource.
- * selectionUpdateDelay = 550 {Number}
- *     The number of milliseconds to wait after a selection change before Xtext services are invoked.
- * sendFullText = false {Boolean}
- *     Whether the full text shall be sent to the server with each request; use this if you want
- *     the server to run in stateless mode. If the option is inactive, the server state is updated regularly.
- * serviceUrl {String}
- *     The URL of the Xtext servlet; if no value is given, it is constructed using the baseUrl option in the form
- *     {location.protocol}//{location.host}{baseUrl}xtext-service
- * showErrorDialogs = false {Boolean}
- *     Whether errors should be displayed in popup dialogs.
- * syntaxDefinition {String}
- *     A path to a JS file defining an Ace syntax definition; if no path is given, it is built from
- *     the 'xtextLang' option in the form 'xtext-resources/mode-{xtextLang}'. Set this option to 'none' to
- *     disable syntax highlighting.
- * textUpdateDelay = 500 {Number}
- *     The number of milliseconds to wait after a text change before Xtext services are invoked.
- * theme {String}
- *     The path name of the Ace theme for the editor.
- * xtextLang {String}
- *     The language name (usually the file extension configured for the language).
+ * Use `createEditor(options)` to create an Xtext editor. You can specify
+ * options either through the function parameter or through `data-editor-x`
+ * attributes, where x is an option name with camelCase converted to
+ * hyphen-separated. The following options are available:
+ * 
+ * baseUrl = "/" {String} The path segment where the Xtext service is found; see
+ * serviceUrl option. contentType {String} The content type included in requests
+ * to the Xtext server. dirtyElement {String | DOMElement} An element into which
+ * the dirty status class is written when the editor is marked dirty; it can be
+ * either a DOM element or an ID for a DOM element. dirtyStatusClass = 'dirty'
+ * {String} A CSS class name written into the dirtyElement when the editor is
+ * marked dirty. document {Document} The document; if not specified, the global
+ * document is used. enableContentAssistService = true {Boolean} Whether content
+ * assist should be enabled. enableFormattingAction = false {Boolean} Whether
+ * the formatting action should be bound to the standard keystroke ctrl+shift+f /
+ * cmd+shift+f. enableFormattingService = true {Boolean} Whether text formatting
+ * should be enabled. enableGeneratorService = true {Boolean} Whether code
+ * generation should be enabled (must be triggered through JavaScript code).
+ * enableOccurrencesService = true {Boolean} Whether marking occurrences should
+ * be enabled. enableSaveAction = false {Boolean} Whether the save action should
+ * be bound to the standard keystroke ctrl+s / cmd+s. enableValidationService =
+ * true {Boolean} Whether validation should be enabled. loadFromServer = true
+ * {Boolean} Whether to load the editor content from the server. parent =
+ * 'xtext-editor' {String | DOMElement} The parent element for the view; it can
+ * be either a DOM element or an ID for a DOM element. parentClass =
+ * 'xtext-editor' {String} If the 'parent' option is not given, this option is
+ * used to find elements that match the given class name. position {String} If
+ * this option is set, the 'position' CSS attribute of the created editor is set
+ * accordingly. resourceId {String} The identifier of the resource displayed in
+ * the text editor; this option is sent to the server to communicate required
+ * information on the respective resource. selectionUpdateDelay = 550 {Number}
+ * The number of milliseconds to wait after a selection change before Xtext
+ * services are invoked. sendFullText = false {Boolean} Whether the full text
+ * shall be sent to the server with each request; use this if you want the
+ * server to run in stateless mode. If the option is inactive, the server state
+ * is updated regularly. serviceUrl {String} The URL of the Xtext servlet; if no
+ * value is given, it is constructed using the baseUrl option in the form
+ * {location.protocol}//{location.host}{baseUrl}xtext-service showErrorDialogs =
+ * false {Boolean} Whether errors should be displayed in popup dialogs.
+ * syntaxDefinition {String} A path to a JS file defining an Ace syntax
+ * definition; if no path is given, it is built from the 'xtextLang' option in
+ * the form 'xtext-resources/mode-{xtextLang}'. Set this option to 'none' to
+ * disable syntax highlighting. textUpdateDelay = 500 {Number} The number of
+ * milliseconds to wait after a text change before Xtext services are invoked.
+ * theme {String} The path name of the Ace theme for the editor. xtextLang
+ * {String} The language name (usually the file extension configured for the
+ * language).
  */
 define('xtext/xtext-ace',[
-    'jquery',
-    'ace/ace',
-    'ace/ext/language_tools',
+//    'jquery',
+//    'ace/ace',
+//    'ace/ext/language_tools',
     'xtext/compatibility',
     'xtext/ServiceBuilder',
 	'xtext/AceEditorContext'
-], function(jQuery, ace, languageTools, compatibility, ServiceBuilder, EditorContext) {
+], function(
+//		jQuery, ace, languageTools, 
+		compatibility, ServiceBuilder, EditorContext) {
 	
 	var exports = {};
 	
 	/**
-	 * Create one or more Xtext editor instances configured with the given options.
-	 * The return value is either an Ace editor or an array of Ace editors, which can
-	 * be further configured using the Ace API.
+	 * Create one or more Xtext editor instances configured with the given
+	 * options. The return value is either an Ace editor or an array of Ace
+	 * editors, which can be further configured using the Ace API.
 	 */
 	exports.createEditor = function(options) {
 		if (!options)
@@ -1465,8 +1553,8 @@ define('xtext/xtext-ace',[
 	AceServiceBuilder.prototype = new ServiceBuilder();
 		
 	/**
-	 * Configure Xtext services for the given editor. The editor does not have to be created
-	 * with createEditor(options).
+	 * Configure Xtext services for the given editor. The editor does not have
+	 * to be created with createEditor(options).
 	 */
 	exports.createServices = function(editor, options) {
 		var xtextServices = {
@@ -1481,7 +1569,8 @@ define('xtext/xtext-ace',[
 	}
 	
 	/**
-	 * Remove all services and listeners that have been previously created with createServices(editor, options).
+	 * Remove all services and listeners that have been previously created with
+	 * createServices(editor, options).
 	 */
 	exports.removeServices = function(editor) {
 		if (!editor.xtextServices)
@@ -1617,8 +1706,9 @@ define('xtext/xtext-ace',[
 		var document = session.getDocument();
 		var start = document.indexToPosition(startOffset);
 		var end = document.indexToPosition(endOffset);
-		var mRange = require('ace/range');
-		var range = new mRange.Range(start.row, start.column, end.row, end.column);
+		// var mRange = require('ace/range');
+		var range = new /*mRange.*/Range(start.row, start.column, end.row, end.column);
+		range.clipRows = function (a,b) { var result = new Range(0,0); result.isEmpty = function () { return true; }; return result; };
 		return session.addMarker(range, 'xtext-marker_' + clazz, 'text');
 	}
 	

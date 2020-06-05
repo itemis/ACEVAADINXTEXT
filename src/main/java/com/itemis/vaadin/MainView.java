@@ -38,16 +38,16 @@ public class MainView extends VerticalLayout {
     public MainView() {
     	
     	XtextAceEditor aceEditor = new XtextAceEditor();
-		aceEditor.setTheme("github");
-		aceEditor.setMode("java");
-
-		aceEditor.setSoftTabs(false);
-		aceEditor.setTabSize(4);
-		aceEditor.setWrap(false);
+//		aceEditor.setTheme("github");
+//		aceEditor.setMode("java");
+//
+//		aceEditor.setSoftTabs(false);
+//		aceEditor.setTabSize(4);
+//		aceEditor.setWrap(false);
 		aceEditor.setReadOnly(false);
-		aceEditor.setMinLines(2);
-		aceEditor.setMaxLines(20);
-		aceEditor.setPlaceholder("Please enter Code");
+//		aceEditor.setMinLines(2);
+//		aceEditor.setMaxLines(20);
+//		aceEditor.setPlaceholder("Please enter Code");
 
 		aceEditor.setSizeFull();
 		aceEditor.setMinWidth("60rem");
