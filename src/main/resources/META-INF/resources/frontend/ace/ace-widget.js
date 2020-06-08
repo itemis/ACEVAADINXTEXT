@@ -182,7 +182,7 @@ class AceWidget extends PolymerElement {
       serviceUrl: 'http://localhost:8081/xtext-service',
       xtextLang: 'mydsl',
       parent: div,
-      syntaxDefinition: 'mydsl', // 'http://localhost:8081/xtext-resources/generated/mode-mydsl.js', // 'none'
+      syntaxDefinition: 'mydsl', // 'none', 'mydsl'
       enableCors: true, // in addition cors had to be handled in server component (see ServerLauncher.xtend)
       // dirtyElement: document.getElementsByClassName(tabId),
       loadFromServer: false,

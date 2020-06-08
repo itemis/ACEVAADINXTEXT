@@ -13,12 +13,13 @@ import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
 
 @Tag("ace-widget")
-// @NpmPackage(value = "requirejs", version = "2.1.22" /*"2.3.6"*/)
+@NpmPackage(value = "requirejs", version = "2.1.22" /*"2.3.6"*/)
 @NpmPackage(value = "ace-builds", version = "1.4.8")
 @NpmPackage(value = "jquery", version = "3.5.1")
 // @JavaScript("https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js")
 // @JsModule("requirejs/require.js")
-@JavaScript(value = "./xtext/xtext-ace.js", loadMode = LoadMode.LAZY)
+@JavaScript("./xtext/xtext-ace.js")
+@JavaScript("./mode-mydsl.js")
 @JsModule("./ace/ace-widget.js")
 
 // @JavaScript("./xtext/require-test.js")
