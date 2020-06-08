@@ -46,7 +46,6 @@
     "@vaadin/vaadin-material-styles": "1.2.3",
     "@vaadin/vaadin-rich-text-editor": "1.1.1",
     "ace-builds": "1.4.8",
-    "requirejs": "2.3.6",
     "jquery": "3.5.1"
   },
   "devDependencies": {
@@ -106,7 +105,7 @@
       "@vaadin/vaadin-material-styles": "1.2.3",
       "@vaadin/vaadin-rich-text-editor": "1.1.1",
       "ace-builds": "1.4.8",
-      "requirejs": "2.3.6",
+      "requirejs": "2.1.22",
       "link-import": "1.0.2",
       "jquery": "3.5.1"
     },
@@ -121,6 +120,6 @@
       "webpack-merge": "4.2.2",
       "webpack-dev-server": "3.10.3"
     },
-    "hash": "d8505d8cb6e3dad92dbec74e6021219340383eb99e38eb5667a1fcc362780450"
+    "hash": "dac19561a0908145ce49ba0b711b6049ce7996882755aa35b768a0a2ee5fe24e"
   }
 }

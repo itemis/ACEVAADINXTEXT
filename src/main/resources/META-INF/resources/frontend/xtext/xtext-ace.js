@@ -7,37 +7,24 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 
+// Modifications done to the original file:
+// * added the import headers
+// * added define ... for ace library functions to make them known to requirejs
+// * added 'define ("mydsl", ....)' syntax definition directly into this
+
 import { define, require, exports, module } from "./require.js"
+// import { define, require, exports, module } from "requirejs" // <-- error because r.js cannot be processed by vaadin webpack preprocessor
 
-import 'ace-builds/src-noconflict/ace.js';
-import 'ace-builds/src-noconflict/snippets/snippets.js';
-import 'ace-builds/src-noconflict/mode-java.js';
-import 'ace-builds/src-noconflict/mode-text.js';
+import ace from 'ace-builds'
+define('ace/ace',[],function() { return ace; });
+define('ace/lib/oop',[], function() { return ace.require('ace/lib/oop'); });
+define('ace/mode/text',[], function() { return ace.require('ace/mode/text'); });
+define('ace/mode/text_highlight_rules',[], function() { return ace.require('ace/mode/text_highlight_rules'); });
+define('ace/ext/language_tools',[], function() { return ace.require('ace/ext/language_tools'); });
 
-import 'ace-builds/src-noconflict/ext-beautify.js';
-import 'ace-builds/src-noconflict/ext-code_lens.js';
-import 'ace-builds/src-noconflict/ext-elastic_tabstops_lite.js';
-import 'ace-builds/src-noconflict/ext-emmet.js';
-import 'ace-builds/src-noconflict/ext-error_marker.js';
-import 'ace-builds/src-noconflict/ext-keybinding_menu.js';
-import 'ace-builds/src-noconflict/ext-language_tools.js';
-import 'ace-builds/src-noconflict/ext-linking.js';
-import 'ace-builds/src-noconflict/ext-modelist.js';
-import 'ace-builds/src-noconflict/ext-options.js';
-import 'ace-builds/src-noconflict/ext-prompt.js';
-import 'ace-builds/src-noconflict/ext-rtl.js';
-import 'ace-builds/src-noconflict/ext-searchbox.js';
-import 'ace-builds/src-noconflict/ext-settings_menu.js';
-import 'ace-builds/src-noconflict/ext-spellcheck.js';
-import 'ace-builds/src-noconflict/ext-split.js';
-import 'ace-builds/src-noconflict/ext-static_highlight.js';
-import 'ace-builds/src-noconflict/ext-statusbar.js';
-import 'ace-builds/src-noconflict/ext-textarea.js';
-import 'ace-builds/src-noconflict/ext-themelist.js';
-import 'ace-builds/src-noconflict/ext-whitespace.js';
+import jQuery from 'jquery';
+define('jquery',[], function () { return jQuery; })
 
-
-import { jQuery } from "./jquery.js";
 
 // require can be configured, but cannot resolve webpack-internal protocol!
 //require.config({
@@ -53,14 +40,6 @@ import { jQuery } from "./jquery.js";
 //    },
 //    waitSeconds: 15
 //});
-
-// Modifications done to the original file:
-// * added the import headers
-// * remove the following required modules from the define calls:
-//   ace/ace, ace/ext/language_tools and jquery
-// * removed require('ace/range'), using Range directly
-// * added some functions to the resulting Range Marker object (clipRows)
-
 
 define('xtext/compatibility',[], function() {
 	
@@ -127,9 +106,9 @@ define('xtext/compatibility',[], function() {
  ******************************************************************************/
 
 define('xtext/services/XtextService',[
-	//'jquery'
+	'jquery'
 	], function(
-//			jQuery
+			jQuery
 			) {
 	
 	var globalState = {};
@@ -415,9 +394,9 @@ define('xtext/services/XtextService',[
  ******************************************************************************/
 
 define('xtext/services/LoadResourceService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -462,9 +441,9 @@ define('xtext/services/LoadResourceService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/SaveResourceService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-//			, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -498,9 +477,9 @@ define('xtext/services/SaveResourceService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/HighlightingService',['xtext/services/XtextService'
-//	, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -535,9 +514,9 @@ define('xtext/services/HighlightingService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/ValidationService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -572,9 +551,9 @@ define('xtext/services/ValidationService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/UpdateService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -737,9 +716,9 @@ define('xtext/services/UpdateService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/ContentAssistService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 
 	/**
@@ -876,9 +855,9 @@ define('xtext/services/ContentAssistService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/HoverService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -940,9 +919,9 @@ define('xtext/services/HoverService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/OccurrencesService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -983,9 +962,9 @@ define('xtext/services/OccurrencesService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/services/FormattingService',['xtext/services/XtextService'
-	//, 'jquery'
+	, 'jquery'
 	], function(XtextService
-			//, jQuery
+			, jQuery
 			) {
 	
 	/**
@@ -1040,7 +1019,7 @@ define('xtext/services/FormattingService',['xtext/services/XtextService'
  ******************************************************************************/
 
 define('xtext/ServiceBuilder',[
-//    'jquery',
+    'jquery',
     'xtext/services/XtextService',
 	'xtext/services/LoadResourceService',
 	'xtext/services/SaveResourceService',
@@ -1052,7 +1031,7 @@ define('xtext/ServiceBuilder',[
 	'xtext/services/OccurrencesService',
 	'xtext/services/FormattingService'
 ], function(
-		//jQuery, 
+		jQuery, 
 		XtextService, LoadResourceService, SaveResourceService, HighlightingService,
 		ValidationService, UpdateService, ContentAssistService, HoverService, OccurrencesService,
 		FormattingService) {
@@ -1371,8 +1350,8 @@ define('xtext/AceEditorContext',[], function() {
 				var document = session.getDocument();
 				var startPos = document.indexToPosition(start);
 				var endPos = document.indexToPosition(end);
-				// var mRange = require('ace/range');
-				return session.getTextRange(new /*mRange.*/Range(startPos.row, startPos.column, endPos.row, endPos.column));
+				var mRange = ace.require('ace/range');
+				return session.getTextRange(new mRange.Range(startPos.row, startPos.column, endPos.row, endPos.column));
 			} else {
 				return session.getValue();
 			}
@@ -1409,7 +1388,7 @@ define('xtext/AceEditorContext',[], function() {
 				var document = this._editor.getSession().getDocument();
 				var startPos = document.indexToPosition(selection.start);
 				var endPos = document.indexToPosition(selection.end);
-				this._editor.selection.setSelectionRange(new /*mRange.*/Range(startPos.row, startPos.column, endPos.row, endPos.column));
+				this._editor.selection.setSelectionRange(new mRange.Range(startPos.row, startPos.column, endPos.row, endPos.column));
 			}
 		},
 		
@@ -1423,8 +1402,8 @@ define('xtext/AceEditorContext',[], function() {
 			var startPos = document.indexToPosition(start);
 			var endPos = document.indexToPosition(end);
 			var cursorPos = this._editor.getCursorPosition();
-			// var mRange = require('ace/range');
-			session.replace(new /*mRange.*/Range(startPos.row, startPos.column, endPos.row, endPos.column), text);
+			var mRange = ace.require('ace/range');
+			session.replace(new mRange.Range(startPos.row, startPos.column, endPos.row, endPos.column), text);
 			this._editor.moveCursorToPosition(cursorPos);
 			this._editor.clearSelection();
 		}
@@ -1492,14 +1471,14 @@ define('xtext/AceEditorContext',[], function() {
  * language).
  */
 define('xtext/xtext-ace',[
-//    'jquery',
-//    'ace/ace',
-//    'ace/ext/language_tools',
+    'jquery',
+    'ace/ace',
+    'ace/ext/language_tools',
     'xtext/compatibility',
     'xtext/ServiceBuilder',
 	'xtext/AceEditorContext'
 ], function(
-//		jQuery, ace, languageTools, 
+		jQuery, ace, languageTools, 
 		compatibility, ServiceBuilder, EditorContext) {
 	
 	var exports = {};
@@ -1710,9 +1689,9 @@ define('xtext/xtext-ace',[
 		var document = session.getDocument();
 		var start = document.indexToPosition(startOffset);
 		var end = document.indexToPosition(endOffset);
-		// var mRange = require('ace/range');
-		var range = new /*mRange.*/Range(start.row, start.column, end.row, end.column);
-		range.clipRows = function (a,b) { var result = new Range(0,0); result.isEmpty = function () { return true; }; return result; };
+		var mRange = ace.require('ace/range');
+		var range = new mRange.Range(start.row, start.column, end.row, end.column);
+		// range.clipRows = function (a,b) { var result = new Range(0,0); result.isEmpty = function () { return true; }; return result; };
 		return session.addMarker(range, 'xtext-marker_' + clazz, 'text');
 	}
 	
@@ -1814,10 +1793,6 @@ define('xtext/xtext-ace',[
 	return exports;
 });
 
-
-define('ace/lib/oop',[], function() { return ace.require('ace/lib/oop'); });
-define('ace/mode/text',[], function() { return ace.require('ace/mode/text'); });
-define('ace/mode/text_highlight_rules',[], function() { return ace.require('ace/mode/text_highlight_rules'); });
 
 define('mydsl', [ "ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules" ], function(oop, mText, mTextHighlightRules) {
 	var HighlightRules = function() {
