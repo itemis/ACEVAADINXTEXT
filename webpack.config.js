@@ -5,8 +5,44 @@
 const merge = require('webpack-merge');
 const flowDefaults = require('./webpack.generated.js');
 
-module.exports = merge(flowDefaults, {
+const {BabelMultiTargetPlugin} = require('webpack-babel-multi-target-plugin');
 
+module.exports = merge(flowDefaults, {
+	plugins: [ new BabelMultiTargetPlugin({
+	      babel: {
+	        plugins: [
+	          // "@babel/plugin-transform-modules-amd",
+
+	        	// workaround for Safari 10 scope issue (https://bugs.webkit.org/show_bug.cgi?id=159270)
+	          "@babel/plugin-transform-block-scoping",
+
+	          // Edge does not support spread '...' syntax in object literals (#7321)
+	          "@babel/plugin-proposal-object-rest-spread"
+	        ],
+
+	        presetOptions: {
+	          useBuiltIns: false // polyfills are provided from webcomponents-loader.js
+	        }
+	      },
+	      targets: {
+	        'es6': { // Evergreen browsers
+	          browsers: [
+	            // It guarantees that babel outputs pure es6 in bundle and in stats.json
+	            // In the case of browsers no supporting certain feature it will be
+	            // covered by the webcomponents-loader.js
+	            'last 1 Chrome major versions'
+	          ],
+	        },
+	        'es5': { // IE11
+	          browsers: [
+	            'ie 11'
+	          ],
+	          tagAssetsWithKey: true, // append a suffix to the file name
+	        }
+	      }
+	    })
+	]
+	
 });
 
 /**
