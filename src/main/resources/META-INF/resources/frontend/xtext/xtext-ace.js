@@ -7,7 +7,7 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 
-import { define, require } from "./require.js"
+import { define, require, exports, module } from "./require.js"
 
 import 'ace-builds/src-noconflict/ace.js';
 import 'ace-builds/src-noconflict/snippets/snippets.js';
@@ -41,11 +41,15 @@ import { jQuery } from "./jquery.js";
 
 // require can be configured, but cannot resolve webpack-internal protocol!
 //require.config({
-//    baseUrl: "webpack-internal://node_modules",
+//    baseUrl: "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-min-noconflict",
 //    paths: {
-//        "ace/ace": "ace-builds/src-noconflict/ace",
-//        "ace/ext/language_tools" : "ace-builds/src-noconflict/ext-language_tools",
-//        "jquery": "jquery/src/jquery"
+//    	"ace" : "ace",
+//        "ace/ext/language_tools" : "ext-language_tools",
+//        "ace/mode/text": "mode-text", 
+//        "ace/mode/text_highlight_rules": "mode-textile"
+//    },
+//    bundles: {
+//    	"ace": [ "ace/lib/oop" ]
 //    },
 //    waitSeconds: 15
 //});
@@ -1811,3 +1815,40 @@ define('xtext/xtext-ace',[
 });
 
 
+define('ace/lib/oop',[], function() { return ace.require('ace/lib/oop'); });
+define('ace/mode/text',[], function() { return ace.require('ace/mode/text'); });
+define('ace/mode/text_highlight_rules',[], function() { return ace.require('ace/mode/text_highlight_rules'); });
+
+define('mydsl', [ "ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules" ], function(oop, mText, mTextHighlightRules) {
+	var HighlightRules = function() {
+		var keywords = "Hello";
+		this.$rules = {
+			"start": [
+				{token: "comment", regex: "\\/\\/.*$"},
+				{token: "comment", regex: "\\/\\*", next : "comment"},
+				{token: "string", regex: '["](?:(?:\\\\.)|(?:[^"\\\\]))*?["]'},
+				{token: "string", regex: "['](?:(?:\\\\.)|(?:[^'\\\\]))*?[']"},
+				{token: "constant.numeric", regex: "[+-]?\\d+(?:(?:\\.\\d*)?(?:[eE][+-]?\\d+)?)?\\b"},
+				{token: "keyword", regex: "\\b(?:" + keywords + ")\\b"}
+			],
+			"comment": [
+				{token: "comment", regex: ".*?\\*\\/", next : "start"},
+				{token: "comment", regex: ".+"}
+			]
+		};
+	};
+	oop.inherits(HighlightRules, mTextHighlightRules.TextHighlightRules);
+	
+	var Mode = function() {
+		this.HighlightRules = HighlightRules;
+	};
+	oop.inherits(Mode, mText.Mode);
+	Mode.prototype.$id = "xtext/mydsl";
+	Mode.prototype.getCompletions = function(state, session, pos, prefix) {
+		return [];
+	}
+	
+	return {
+		Mode: Mode
+	};
+});

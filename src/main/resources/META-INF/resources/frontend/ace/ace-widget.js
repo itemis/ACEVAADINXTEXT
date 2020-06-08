@@ -182,7 +182,7 @@ class AceWidget extends PolymerElement {
       serviceUrl: 'http://localhost:8081/xtext-service',
       xtextLang: 'mydsl',
       parent: div,
-      syntaxDefinition: 'none',
+      syntaxDefinition: 'mydsl', // 'http://localhost:8081/xtext-resources/generated/mode-mydsl.js', // 'none'
       enableCors: true, // in addition cors had to be handled in server component (see ServerLauncher.xtend)
       // dirtyElement: document.getElementsByClassName(tabId),
       loadFromServer: false,
@@ -199,7 +199,6 @@ class AceWidget extends PolymerElement {
     	ace.config.set('modePath', CDN);
     	ace.config.set('themePath', CDN);
     	ace.config.set('workerPath', CDN);
-
 
         this.editor = xtext.createEditor(config);
 	    this.editor.focus = editorFocus;
