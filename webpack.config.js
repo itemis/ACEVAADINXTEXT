@@ -12,6 +12,7 @@ module.exports = merge(flowDefaults, {
 	      babel: {
 	        plugins: [
 	          // "@babel/plugin-transform-modules-amd",
+	        	["transform-amd-to-commonjs", { "restrictToTopLevelDefine": true }],
 
 	        	// workaround for Safari 10 scope issue (https://bugs.webkit.org/show_bug.cgi?id=159270)
 	          "@babel/plugin-transform-block-scoping",

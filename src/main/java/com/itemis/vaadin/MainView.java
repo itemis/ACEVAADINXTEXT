@@ -38,26 +38,26 @@ public class MainView extends VerticalLayout {
     public MainView() {
     	
     	XtextAceEditor aceEditor = new XtextAceEditor();
-//		aceEditor.setTheme("github");
+		aceEditor.setTheme("github");
 //		aceEditor.setMode("java");
 //
-//		aceEditor.setSoftTabs(false);
-//		aceEditor.setTabSize(4);
-//		aceEditor.setWrap(false);
+		aceEditor.setSoftTabs(false);
+		aceEditor.setTabSize(4);
+		aceEditor.setWrap(false);
 		aceEditor.setReadOnly(false);
-//		aceEditor.setMinLines(2);
-//		aceEditor.setMaxLines(20);
-//		aceEditor.setPlaceholder("Please enter Code");
+		aceEditor.setMinLines(2);
+		aceEditor.setMaxLines(20);
+		aceEditor.setPlaceholder("Please enter Code");
 
 		aceEditor.setSizeFull();
-		aceEditor.setMinWidth("60rem");
+		aceEditor.setMinWidth("0.6rem");
 		aceEditor.setMinHeight("20rem");
 		aceEditor.setMaxHeight("270vh");
 		aceEditor.getElement().getStyle().set("overflow", "auto");
 		aceEditor.getElement().getStyle().set("align-self", "start");
 
         // Use custom CSS classes to apply styling. This is defined in shared-styles.css.
-        // addClassName("centered-content");
+        addClassName("centered-content");
 
         add(aceEditor);
     }

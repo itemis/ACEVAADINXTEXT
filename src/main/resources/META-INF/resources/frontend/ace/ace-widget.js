@@ -21,15 +21,16 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
 // import '@vaadin/flow-frontend/xtext/xtext-ace.js';
 
+
+// import ace from 'ace-builds'
+//
 import 'ace-builds/src-noconflict/ace.js';
 import 'ace-builds/src-noconflict/ext-language_tools.js';
-import 'ace-builds/src-noconflict/snippets/snippets.js';
+// import 'ace-builds/src-noconflict/snippets/snippets.js';
 
 const CDN = 'https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-min-noconflict';
 
 import { require, define } from "../xtext/require.js"
-
-
 
 var editorFocus = function() { 
   var _self = this;
@@ -157,13 +158,13 @@ class AceWidget extends PolymerElement {
     // `snippets.js` arrive before `ace.js` is ready. I am adding some tests here with dynamic imports 
     // to fix thaty
     console.debug("import ace");
-    if (!ace) {
-      await import(`${baseUrl}ace.js`);
-    }
+//    if (!ace) {
+//      await import(`${baseUrl}ace.js`);
+//    }
     console.debug("import ace ext-language-tools");
-    if (!ace.require("ace/ext/language_tools")) {
-      await import(`${baseUrl}ext-language_tools.js`);
-    }
+//    if (!ace.require("ace/ext/language_tools")) {
+//      await import(`${baseUrl}ext-language_tools.js`);
+//    }
     
     // use xtext functions here
     // console.debug("import xtext");
@@ -188,7 +189,6 @@ class AceWidget extends PolymerElement {
       loadFromServer: false,
       sendFullText: true,
       resourceId: 'some.mydsl',
-      // syntaxDefinition: syntaxDefinitionFilePath,
       // enableOccurrencesService: isKnownLanguage,
       // enableValidationService: isKnownLanguage,
       enableSaveAction: false // don't want the default xtext-save action
@@ -220,10 +220,10 @@ class AceWidget extends PolymerElement {
 
     //let baseUrl = this.baseUrl || `${this.importPath}../../ace-builds/src-min-noconflict/`
 
-    ace.config.set('basePath', CDN);
-    ace.config.set('modePath', CDN);
-    ace.config.set('themePath', CDN);
-    ace.config.set('workerPath', CDN);
+//    ace.config.set('basePath', CDN);
+//    ace.config.set('modePath', CDN);
+//    ace.config.set('themePath', CDN);
+//    ace.config.set('workerPath', CDN);
 
     this.themeChanged();
     this.editorValue = '';
@@ -272,12 +272,12 @@ class AceWidget extends PolymerElement {
         maxLines: this.maxlines,
     });
 
-    // snippets
-    if (this.enableSnippets) {
-      let snippetManager = ace.require('ace/snippets').snippetManager;
-      snippetManager.register(this.snippets, 'javascript');
-    }
-    // autoComplete
+//    // snippets
+//    if (this.enableSnippets) {
+//      let snippetManager = ace.require('ace/snippets').snippetManager;
+//      snippetManager.register(this.snippets, 'javascript');
+//    }
+//    // autoComplete
     let langTools = ace.require('ace/ext/language_tools');
     let aceWidgetCompleter = {
       getCompletions: function(editor, session, pos, prefix, callback) {
@@ -330,6 +330,7 @@ class AceWidget extends PolymerElement {
       return;
     }
     if (this.editorValue != this.value) {
+      console.debug("[ace-widget] value changed")
       this.editorValue = this.value;
       this.editor.clearSelection();
       this.editor.resize();
@@ -363,7 +364,7 @@ class AceWidget extends PolymerElement {
   }
 
   editorChangeAction() {
-    // console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
+    console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
     this.dispatchEvent(new CustomEvent('editor-content', {detail: {value: this.editorValue, oldValue: this._value}}));
   }
 
