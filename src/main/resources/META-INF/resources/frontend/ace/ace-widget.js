@@ -54,6 +54,7 @@ class AceWidget extends PolymerElement {
         #editor {
           border: 1px solid #e3e3e3;
           border-radius: 4px;
+          width: 99%  !important;
           @apply --ace-widget-editor;
         }
       </style>

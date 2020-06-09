@@ -59,9 +59,9 @@ public class MainView extends VerticalLayout {
 		aceEditor.setPlaceholder("Please enter Code");
 
 		aceEditor.setSizeFull();
-		aceEditor.setMinWidth("0.6rem");
-		aceEditor.setMinHeight("20rem");
-		aceEditor.setMaxHeight("270vh");
+		aceEditor.setMaxWidth("600px");
+		aceEditor.setMaxHeight("400px");
+		aceEditor.setMinWidth("500px");
 		aceEditor.getElement().getStyle().set("overflow", "auto");
 		aceEditor.getElement().getStyle().set("align-self", "start");
 
@@ -70,11 +70,12 @@ public class MainView extends VerticalLayout {
 
         add(aceEditor);
         
-        Button button = new Button("Vaadin button");
+        Button button = new Button("Get editor contents");
         button.addClickListener(this::showButtonClickedMessage);
         add(button);
         
-        tf = new TextField("A Field");
+        tf = new TextField("Editor contents");
+        tf.setWidth("400px");
         add(tf);
     }
     
