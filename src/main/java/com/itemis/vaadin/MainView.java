@@ -1,8 +1,12 @@
 package com.itemis.vaadin;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinSession;
 
 /**
  * A sample Vaadin view class.
@@ -29,15 +33,16 @@ public class MainView extends VerticalLayout {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	private TextField tf;
+	private XtextAceEditor aceEditor;
 	/**
      * Construct a new Vaadin view.
      * <p>
      * Build the initial UI state for the user accessing the application.
      */
-    public MainView() {
-    	
-    	XtextAceEditor aceEditor = new XtextAceEditor();
+    public MainView() {    	
+    	aceEditor = new XtextAceEditor();
 		aceEditor.setTheme("github");
 //		aceEditor.setMode("java");
 //
@@ -60,6 +65,20 @@ public class MainView extends VerticalLayout {
         addClassName("centered-content");
 
         add(aceEditor);
+        
+        Button button = new Button("Vaadin button");
+        button.addClickListener(this::showButtonClickedMessage);
+        add(button);
+        
+        tf = new TextField("A Field");
+        add(tf);
     }
+    
+    private void showButtonClickedMessage(ClickEvent event) {
+    	// Put some initial content in it
+    	String editorValue = aceEditor.getValue();
+    	tf.setValue(editorValue);    	
+    }
+   
 
 }

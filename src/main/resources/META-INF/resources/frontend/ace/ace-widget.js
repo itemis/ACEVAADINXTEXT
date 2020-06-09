@@ -188,9 +188,16 @@ class AceWidget extends PolymerElement {
       // dirtyElement: document.getElementsByClassName(tabId),
       loadFromServer: false,
       sendFullText: true,
-      resourceId: 'some.mydsl',
-      // enableOccurrencesService: isKnownLanguage,
-      // enableValidationService: isKnownLanguage,
+      jqueryGlobal: true,
+      // resourceId: 'some.mydsl',
+      enableHighlightingService: false,
+      enableOccurrencesService: false,
+      enableValidationService: false,
+      enableContentAssistService: true,
+      enableHoverService: true,
+      enableFormattingService: false,
+      enableGeneratorService: false,
+      dirtyElement: false,
       enableSaveAction: false // don't want the default xtext-save action
     };
     require(["xtext/xtext-ace"], xtext => {
@@ -201,6 +208,7 @@ class AceWidget extends PolymerElement {
     	ace.config.set('workerPath', CDN);
 
         this.editor = xtext.createEditor(config);
+    	// this.editor = ace.edit(div);
 	    this.editor.focus = editorFocus;
 
 	    this.dispatchEvent(new CustomEvent('editor-ready', { detail: {value: this.editor, oldValue: null}}));

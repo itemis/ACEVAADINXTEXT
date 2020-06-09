@@ -10,6 +10,8 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
+import com.vaadin.flow.spring.annotation.UIScope;
+import com.vaadin.flow.spring.annotation.VaadinSessionScope;
 
 @Tag("ace-widget")
 @NpmPackage(value = "requirejs", version = "2.1.22" /*"2.3.6"*/)
@@ -20,7 +22,7 @@ import com.vaadin.flow.shared.Registration;
 @JavaScript("./xtext/xtext-ace.js")
 @JavaScript("./mode-mydsl.js")
 @JsModule("./ace/ace-widget.js")
-
+@VaadinSessionScope
 // @JavaScript("./xtext/require-test.js")
 // @JavaScript("./xtext/require-test-import.js")
 // @JavaScript("./xtext/jquery-test.js")
@@ -121,7 +123,7 @@ public class XtextAceEditor extends AbstractSinglePropertyField<XtextAceEditor, 
 //    /**
 //     * Returns the current value of the editor.
 //     */
-//    @Synchronize(value = "editor-content", property = "editorValue") // TODO: results in page reloads
+    @Synchronize(value = "editor-content", property = "editorValue") // TODO: results in page reloads
     public String getValue() {
         return getElement().getProperty("editorValue");
     }

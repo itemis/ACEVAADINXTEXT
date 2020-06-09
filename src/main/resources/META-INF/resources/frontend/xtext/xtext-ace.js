@@ -23,6 +23,9 @@ define('ace/mode/text_highlight_rules',[], function() { return ace.require('ace/
 define('ace/ext/language_tools',[], function() { return ace.require('ace/ext/language_tools'); });
 
 import jQuery from 'jquery';
+
+// import { jQuery } from "./jquery.js";
+
 define('jquery',[], function () { return jQuery; })
 
 
@@ -336,12 +339,14 @@ define('xtext/services/XtextService',[
 					if (globalState._waitingRequests) {
 						for (var i = 0; i < globalState._waitingRequests.length; i++) {
 							var request = globalState._waitingRequests[i];
+							// jQuery.ajaxSetup({global: false});
 							jQuery.ajax(request.requestUrl, request.settings);
 						}
 						delete globalState._waitingRequests;
 					}
 				}
 			}
+			// jQuery.ajaxSetup({global: false});
 			jQuery.ajax(requestUrl, settings);
 		}
 	}
@@ -1492,6 +1497,10 @@ define('xtext/xtext-ace',[
 		if (!options)
 			options = {};
 		
+//		if (options.jqueryGlobal == false) {
+//			jQuery.ajaxSetup({global: false});
+//		}
+		
 		var query;
 		if (jQuery.type(options.parent) === 'string') {
 			query = jQuery('#' + options.parent, options.document);
@@ -1712,7 +1721,8 @@ define('xtext/xtext-ace',[
 				}
 			}
 			editorContext._annotations = [];
-		}).done(function(result) {
+		})
+		.done(function(result) {
 			for (var i = 0; i < result.issues.length; i++) {
 				var entry = result.issues[i];
 				var marker = self._addMarker(session, entry.offset, entry.offset + entry.length, entry.severity);
@@ -1726,7 +1736,8 @@ define('xtext/xtext-ace',[
 				});
 			}
 			session.setAnnotations(editorContext._annotations);
-		});
+		})
+		;
 	}
 		
 	/**

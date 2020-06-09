@@ -7,7 +7,10 @@ const flowDefaults = require('./webpack.generated.js');
 
 const {BabelMultiTargetPlugin} = require('webpack-babel-multi-target-plugin');
 
-module.exports = merge(flowDefaults, {
+module.exports = merge(flowDefaults, { });
+
+/**
+
 	plugins: [ new BabelMultiTargetPlugin({
 	      babel: {
 	        plugins: [
@@ -44,7 +47,7 @@ module.exports = merge(flowDefaults, {
 	    })
 	]
 	
-});
+ */
 
 /**
  * This file can be used to configure the flow plugin defaults.
