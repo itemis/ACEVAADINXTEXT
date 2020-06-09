@@ -23,6 +23,7 @@ import com.vaadin.flow.spring.annotation.VaadinSessionScope;
 @JavaScript("./mode-mydsl.js")
 @JsModule("./ace/ace-widget.js")
 @VaadinSessionScope
+@UIScope
 // @JavaScript("./xtext/require-test.js")
 // @JavaScript("./xtext/require-test-import.js")
 // @JavaScript("./xtext/jquery-test.js")

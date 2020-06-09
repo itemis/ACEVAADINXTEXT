@@ -3,7 +3,9 @@ package com.itemis.vaadin;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
@@ -27,6 +29,8 @@ import com.vaadin.flow.server.VaadinSession;
         enableInstallPrompt = false)
 // @CssImport("./styles/shared-styles.css")
 // @CssImport(value = "./styles/vaadin-text-field-styles.css", themeFor = "vaadin-text-field")
+// @PreserveOnRefresh
+// @Push
 public class MainView extends VerticalLayout {
 
     /**

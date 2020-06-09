@@ -1497,10 +1497,6 @@ define('xtext/xtext-ace',[
 		if (!options)
 			options = {};
 		
-//		if (options.jqueryGlobal == false) {
-//			jQuery.ajaxSetup({global: false});
-//		}
-		
 		var query;
 		if (jQuery.type(options.parent) === 'string') {
 			query = jQuery('#' + options.parent, options.document);

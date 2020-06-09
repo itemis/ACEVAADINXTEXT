@@ -188,16 +188,14 @@ class AceWidget extends PolymerElement {
       // dirtyElement: document.getElementsByClassName(tabId),
       loadFromServer: false,
       sendFullText: true,
-      jqueryGlobal: true,
       // resourceId: 'some.mydsl',
-      enableHighlightingService: false,
-      enableOccurrencesService: false,
-      enableValidationService: false,
+      enableHighlightingService: true,
+      enableOccurrencesService: true,
+      enableValidationService: true,
       enableContentAssistService: true,
       enableHoverService: true,
-      enableFormattingService: false,
+      enableFormattingService: true,
       enableGeneratorService: false,
-      dirtyElement: false,
       enableSaveAction: false // don't want the default xtext-save action
     };
     require(["xtext/xtext-ace"], xtext => {
