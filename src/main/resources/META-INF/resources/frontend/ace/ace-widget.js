@@ -158,11 +158,11 @@ class AceWidget extends PolymerElement {
     // In non-minified mode, imports are parallelized, and sometimes `ext-language_tools.js` and
     // `snippets.js` arrive before `ace.js` is ready. I am adding some tests here with dynamic imports 
     // to fix thaty
-    console.debug("import ace");
+    // console.debug("import ace");
 //    if (!ace) {
 //      await import(`${baseUrl}ace.js`);
 //    }
-    console.debug("import ace ext-language-tools");
+    // console.debug("import ace ext-language-tools");
 //    if (!ace.require("ace/ext/language_tools")) {
 //      await import(`${baseUrl}ext-language_tools.js`);
 //    }
@@ -170,7 +170,7 @@ class AceWidget extends PolymerElement {
     // use xtext functions here
     // console.debug("import xtext");
     // if (!xtext) {
-       await import(`@vaadin/flow-frontend/xtext/xtext-ace.js`);
+      // await import(`@vaadin/flow-frontend/xtext/xtext-ace.js`);
     // }
     
     // console.debug("[ace-widget] connectedCallback")
@@ -233,10 +233,11 @@ class AceWidget extends PolymerElement {
 //    ace.config.set('workerPath', CDN);
 
     this.themeChanged();
-    this.editorValue = '';
-    editor.setOption('enableSnippets', this.enableSnippets);
-    editor.setOption('enableBasicAutocompletion', true);
-    editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
+    // this.editorValue = '';
+    
+    // editor.setOption('enableSnippets', this.enableSnippets);
+    // editor.setOption('enableBasicAutocompletion', true);
+    // editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
 
     editor.on('change', this.editorChangeAction.bind(this));
     editor.on('input', this._updatePlaceholder.bind(this));
@@ -262,17 +263,17 @@ class AceWidget extends PolymerElement {
     // Setting content
 
     // Trying to get content as HTML content
-    let htmlContent = this.innerHTML.trim();
+//    let htmlContent = this.innerHTML.trim();
     // console.debug("[ace-widget] HTML content found", htmlContent);
 
     // If we have a value in the `value` attribute, we keep it, else we use the HTML content
-    if (this.value === undefined) {
-      this.value = htmlContent;
+//    if (this.value === undefined) {
+//      this.value = htmlContent;
       // console.debug("[ace-widget] initializeEditor - using HTML content as value", this.value)
-    } else {
+//    } else {
       // Forcing a valueChanged() call, because the initial one din't do anything as editor wasn't created yet
       this.valueChanged();
-    }
+//    }
     // min and max lines
     editor.setOptions({
         minLines: this.minlines,
@@ -285,17 +286,19 @@ class AceWidget extends PolymerElement {
 //      snippetManager.register(this.snippets, 'javascript');
 //    }
 //    // autoComplete
-    let langTools = ace.require('ace/ext/language_tools');
-    let aceWidgetCompleter = {
-      getCompletions: function(editor, session, pos, prefix, callback) {
-        if (prefix.length === 0) {
-          callback(null, []);
-          return;
-        }
-        callback(null, self.autoComplete || []);
-      },
-    };
-    langTools.addCompleter(aceWidgetCompleter);
+    
+    
+//    let langTools = ace.require('ace/ext/language_tools');
+//    let aceWidgetCompleter = {
+//      getCompletions: function(editor, session, pos, prefix, callback) {
+//        if (prefix.length === 0) {
+//          callback(null, []);
+//          return;
+//        }
+//        callback(null, self.autoComplete || []);
+//      },
+//    };
+//    langTools.addCompleter(aceWidgetCompleter);
 
     if (this.verbose) {
       console.debug('[ace-widget] After initializing: editor.getSession().getValue()',
@@ -371,11 +374,14 @@ class AceWidget extends PolymerElement {
   }
 
   editorChangeAction() {
-    console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this._value})
-    this.dispatchEvent(new CustomEvent('editor-content', {detail: {value: this.editorValue, oldValue: this._value}}));
+    console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this.value})
+    this.dispatchEvent(new CustomEvent('editor-content', {detail: {value: this.editorValue, oldValue: this.value}}));
   }
 
   get editorValue() {
+	if (this.editor == undefined) {
+		return '';
+	}
     return this.editor.getValue();
   }
 
@@ -383,9 +389,12 @@ class AceWidget extends PolymerElement {
     if (value === undefined) {
       return;
     }
-    this._value = value;
-    this.editor.setValue(value);
-    // console.debug("[ace-widget] set editorValue", this.editorValue)
+    this.value = value;
+    if (this.editor == undefined) {
+    	return;
+    }
+	this.editor.setValue(value);
+	// console.debug("[ace-widget] set editorValue", this.editorValue)
   }
 
   focus() {
