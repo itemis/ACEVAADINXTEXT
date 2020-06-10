@@ -130,11 +130,6 @@
             <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
-		<!--  dependency>
-			<groupId>io.github.ciesielskis</groupId>
-			<artifactId>ace-editor</artifactId>
-			<version>1.0.3-Beta</version>
-		</dependency -->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
@@ -186,7 +181,7 @@
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
-                <plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!-- Clean build and startup time for Vaadin apps sometimes may exceed

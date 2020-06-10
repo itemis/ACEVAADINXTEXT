@@ -6,6 +6,8 @@ define('ace/lib/oop',[], function() { return ace.require('ace/lib/oop'); });
 define('ace/mode/text',[], function() { return ace.require('ace/mode/text'); });
 define('ace/mode/text_highlight_rules',[], function() { return ace.require('ace/mode/text_highlight_rules'); });
 
+// from this point down follows the original generated syntax definition file of the xtext project (except for the name 'mydsl' passed to the definition)
+
 define('mydsl', ["ace/lib/oop", "ace/mode/text", "ace/mode/text_highlight_rules"], function(oop, mText, mTextHighlightRules) {
 	var HighlightRules = function() {
 		var keywords = "Hello";
