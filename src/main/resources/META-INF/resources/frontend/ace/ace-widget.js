@@ -181,11 +181,11 @@ class AceWidget extends PolymerElement {
 
     let config = {
       baseUrl: `${CDN}`,
-      serviceUrl: 'http://localhost:8080/xtext-service',
+      serviceUrl: '/xtext-service',
       xtextLang: 'mydsl',
       parent: div,
       syntaxDefinition: 'mydsl', // 'none', 'mydsl'
-      enableCors: true, // in addition cors had to be handled in server component (see ServerLauncher.xtend)
+      // enableCors: true, // in addition cors had to be handled in server component (see ServerLauncher.xtend)
       // dirtyElement: document.getElementsByClassName(tabId),
       loadFromServer: false,
       sendFullText: true,
