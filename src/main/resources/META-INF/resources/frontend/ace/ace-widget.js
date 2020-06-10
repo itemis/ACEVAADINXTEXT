@@ -181,7 +181,7 @@ class AceWidget extends PolymerElement {
 
     let config = {
       baseUrl: `${CDN}`,
-      serviceUrl: 'http://localhost:8081/xtext-service',
+      serviceUrl: 'http://localhost:8080/xtext-service',
       xtextLang: 'mydsl',
       parent: div,
       syntaxDefinition: 'mydsl', // 'none', 'mydsl'

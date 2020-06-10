@@ -12,6 +12,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+		<xtextVersion>2.21.0</xtextVersion>
+		<projectVersion>1.0.0-SNAPSHOT</projectVersion>
+		<projectGroupId>org.xtext.example.mydsl</projectGroupId>
+
         <vaadin.version>14.2.0</vaadin.version>
 
     </properties>
@@ -141,12 +145,48 @@
 			<artifactId>ace</artifactId>
 			<version>1.3.3</version>
 		</dependency>
+		<dependency>
+			<groupId>${projectGroupId}</groupId>
+			<artifactId>org.xtext.example.mydsl</artifactId>
+			<version>${projectVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>${projectGroupId}</groupId>
+			<artifactId>org.xtext.example.mydsl.ide</artifactId>
+			<version>${projectVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xtext.example.mydsl</groupId>
+			<artifactId>org.xtext.example.mydsl.web</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<classifier>classes</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.xbase.web</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtext</groupId>
+			<artifactId>org.eclipse.xtext.web.servlet</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.lib</artifactId>
+			<version>${xtextVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>requirejs</artifactId>
+			<version>2.3.6</version>
+		</dependency>
     </dependencies>
 
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
-            <plugin>
+                <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <!-- Clean build and startup time for Vaadin apps sometimes may exceed
