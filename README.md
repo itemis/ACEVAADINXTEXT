@@ -2,7 +2,30 @@
 
 This project was setup using https://vaadin.com/start/latest/project-base
 
+The project provides a basic vaadin spring xtext-ace-editor integration.
+
+When run, navigate to http://localhost:8080 to see an xtext-ace-editor,
+integrated with some other vaadin ui components.
+
+
 ## build
+
+Initial setup:
+- Make sure that you created the xtext mydsl example.
+- Add the following section to the `pom.xml` of the `org.xtext.example.mydsl.web` project
+``` xml
+<!-- ... (maven-war-plugin) -->
+<configuration>
+  <!-- other configurations -->
+  <attachClasses>true</attachClasses>
+  <classesClassifier>classes</classesClassifier>
+</configuration
+<!-- ... -->
+```
+  This will add all the classes within this war to the maven repository.
+- Executed `mvn install` (in the root project) to get the all artifacts (org.xtext.example.mydsl...) into the local maven repository, which are referenced by this project.
+
+Now you are ready to compile this project:
 
 `mvn compile`
 `mvn verify -Pit`
