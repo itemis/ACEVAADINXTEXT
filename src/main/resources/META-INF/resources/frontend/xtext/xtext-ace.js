@@ -10,12 +10,12 @@
 // Modifications done to the original file:
 // * added the import headers
 // * added define ... for ace library functions to make them known to requirejs
-// * added 'define ("mydsl", ....)' syntax definition directly into this
 
 import { define, require, exports, module } from "./require.js"
 // import { define, require, exports, module } from "requirejs" // <-- error because r.js cannot be processed by vaadin webpack preprocessor
 
 import ace from 'ace-builds'
+// make necessary module definitions for xtext services to resolve
 define('ace/ace',[],function() { return ace; });
 define('ace/lib/oop',[], function() { return ace.require('ace/lib/oop'); });
 define('ace/mode/text',[], function() { return ace.require('ace/mode/text'); });
@@ -25,21 +25,7 @@ define('ace/ext/language_tools',[], function() { return ace.require('ace/ext/lan
 import jQuery from 'jquery';
 define('jquery',[], function () { return jQuery; })
 
-
-// require can be configured, but cannot resolve webpack-internal protocol!
-//require.config({
-//    baseUrl: "https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-min-noconflict",
-//    paths: {
-//    	"ace" : "ace",
-//        "ace/ext/language_tools" : "ext-language_tools",
-//        "ace/mode/text": "mode-text", 
-//        "ace/mode/text_highlight_rules": "mode-textile"
-//    },
-//    bundles: {
-//    	"ace": [ "ace/lib/oop" ]
-//    },
-//    waitSeconds: 15
-//});
+// unchanged file from here on
 
 define('xtext/compatibility',[], function() {
 	
@@ -336,14 +322,12 @@ define('xtext/services/XtextService',[
 					if (globalState._waitingRequests) {
 						for (var i = 0; i < globalState._waitingRequests.length; i++) {
 							var request = globalState._waitingRequests[i];
-							// jQuery.ajaxSetup({global: false});
 							jQuery.ajax(request.requestUrl, request.settings);
 						}
 						delete globalState._waitingRequests;
 					}
 				}
 			}
-			// jQuery.ajaxSetup({global: false});
 			jQuery.ajax(requestUrl, settings);
 		}
 	}
