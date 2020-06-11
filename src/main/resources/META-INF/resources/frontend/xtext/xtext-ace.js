@@ -23,9 +23,6 @@ define('ace/mode/text_highlight_rules',[], function() { return ace.require('ace/
 define('ace/ext/language_tools',[], function() { return ace.require('ace/ext/language_tools'); });
 
 import jQuery from 'jquery';
-
-// import { jQuery } from "./jquery.js";
-
 define('jquery',[], function () { return jQuery; })
 
 

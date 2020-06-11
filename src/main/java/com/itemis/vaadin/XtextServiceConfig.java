@@ -6,11 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.xtext.example.mydsl.web.MyDslServlet;
 
 @Configuration
-class MyConfig {
+class XtextServiceConfig {
+	public final static String SERVICE_URL = "/xtext-service";
+	
 	@Bean
 	public ServletRegistrationBean<MyDslServlet> exampleServletBean() {
 	    ServletRegistrationBean<MyDslServlet> bean = new ServletRegistrationBean<MyDslServlet>(
-	      new MyDslServlet(), "/xtext-service/*");
+	      new MyDslServlet(), SERVICE_URL + "/*");
 	    bean.setLoadOnStartup(1);
 	    return bean;
 	}

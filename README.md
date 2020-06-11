@@ -28,11 +28,54 @@ Initial setup:
 Now you are ready to compile this project:
 
 `mvn compile`
-`mvn verify -Pit`
 
 ## run
 
 `mvn spring-boot:run`
+
+## Exchange DSL
+
+- Make sure to add the appropriate maven artefacts for that (other) language.
+  Add (or exchange) all `${projectGroupId}` entries with their respective counterpart (or change the `projectGroupId` variable).
+  ```xml
+		<dependency>
+			<groupId>${projectGroupId}</groupId>
+			<artifactId>${projectGroupId}</artifactId>
+			<version>${projectVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>${projectGroupId}</groupId>
+			<artifactId>${projectGroupId}.ide</artifactId>
+			<version>${projectVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>${projectGroupId}</groupId>
+			<artifactId>${projectGroupId}.web</artifactId>
+			<version>${projectVersion}</version>
+			<classifier>classes</classifier>
+		</dependency>
+  ```
+- Copy the generated syntax definition from the web project `src/main/webapp/xtext-resources/generated/mode-<your-language>.js` 
+  to src/main/resources/META-INF/resources/frontend/mode-<your language>.js
+  and add '<your-language>' as first parameter to the topmost define function call:
+  ```javascript
+    define('<your-language>', ["ace/lib/oop", ...
+  ```    
+  and add the following header to the js file itself:
+  ```javascript
+	import { define } from "@vaadin/flow-frontend/xtext/require.js"
+	
+	import ace from 'ace-builds'
+	define('ace/ace',[],function() { return ace; });
+	define('ace/lib/oop',[], function() { return ace.require('ace/lib/oop'); });
+	define('ace/mode/text',[], function() { return ace.require('ace/mode/text'); });
+	define('ace/mode/text_highlight_rules',[], function() { return ace.require('ace/mode/text_highlight_rules'); });
+	
+	// from this point down follows the original generated syntax definition file of the xtext project (except for the name 'mydsl' passed to the definition)
+  ```
+  
+- Change the xtext servlet to your class in XtextServiceConfig.java
+- Change `syntaxDefinition` and `xtextLang` in `MainView.java` to your language. 
 
 ## Import into eclipse
 

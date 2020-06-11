@@ -10,23 +10,14 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.spring.annotation.UIScope;
-import com.vaadin.flow.spring.annotation.VaadinSessionScope;
 
 @Tag("ace-widget")
 @NpmPackage(value = "requirejs", version = "2.1.22" /*"2.3.6"*/)
 @NpmPackage(value = "ace-builds", version = "1.4.8")
 @NpmPackage(value = "jquery", version = "3.5.1")
-// @JavaScript("https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js")
-// @JsModule("requirejs/require.js")
 @JavaScript("./xtext/xtext-ace.js")
 @JavaScript("./mode-mydsl.js")
 @JsModule("./ace/ace-widget.js")
-@VaadinSessionScope
-@UIScope
-// @JavaScript("./xtext/require-test.js")
-// @JavaScript("./xtext/require-test-import.js")
-// @JavaScript("./xtext/jquery-test.js")
 public class XtextAceEditor extends AbstractSinglePropertyField<XtextAceEditor, String>
 		implements HasSize, HasStyle, Focusable<XtextAceEditor> {
 
@@ -91,7 +82,69 @@ public class XtextAceEditor extends AbstractSinglePropertyField<XtextAceEditor, 
         getElement().setAttribute("wrap", wrap);
     }
 
-    //TODO: autoComplete
+    /**
+     * Sets xtext serviceUrl for the editor.
+     */
+    public void setServiceUrl(String serviceUrl) {
+    	getElement().setProperty("serviceUrl", serviceUrl);
+    }
+
+    /**
+     * Sets xtext syntaxDefinition for the editor.
+     */
+    public void setSyntaxDefinition(String syntaxDefinition) {
+    	getElement().setProperty("syntaxDefinition", syntaxDefinition);
+    }
+
+    /**
+     * Sets xtext xtextLang for the editor.
+     */
+    public void setXtextLang(String xtextLang) {
+    	getElement().setProperty("xtextLang", xtextLang);
+    }
+
+    /**
+     * Sets xtext enableContentAssistService for the editor.
+     */
+    public void setContentAssist(Boolean contentAssist) {
+    	getElement().setProperty("enableContentAssist", contentAssist);
+    }
+
+    /**
+     * Sets xtext enableHighlightingService for the editor.
+     */
+    public void setHighlighting(Boolean highlighting) {
+    	getElement().setProperty("enableHighlighting", highlighting);
+    }
+    
+    /**
+     * Sets xtext enableOccurrenceService for the editor.
+     */
+    public void setOccurrences(Boolean occurrences) {
+    	getElement().setProperty("enableOccurrences", occurrences);
+    }
+
+    /**
+     * Sets xtext enableValidationService for the editor.
+     */
+    public void setValidation(Boolean validation) {
+    	getElement().setProperty("enableValidation", validation);
+    }
+
+    /**
+     * Sets xtext enableHoverService for the editor.
+     */
+    public void setHover(Boolean hover) {
+    	getElement().setProperty("enableHover", hover);
+    }
+
+    /**
+     * Sets xtext enableFormattingService for the editor.
+     */
+    public void setFormatting(Boolean formatting) {
+    	getElement().setProperty("enableFormatting", formatting);
+    }
+    
 
     /**
      * Sets minlines for the editor.

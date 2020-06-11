@@ -1,4 +1,7 @@
 /**
+This software artefact is based on: https://lostinbrittany.github.io/ace-widget/
+
+original license following:
 @license MIT
 Copyright (c) 2015 Horacio "LostInBrittany" Gonzalez
 
@@ -10,8 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @element ace-widget
 @blurb LostInBrittany's Ace (http://ace.c9.io/) widget
-@homepage index.html
-@demo demo/index.html
 */
 
 /* globals ace */
@@ -19,17 +20,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-// import '@vaadin/flow-frontend/xtext/xtext-ace.js';
-
-
 // import ace from 'ace-builds'
-//
 import 'ace-builds/src-noconflict/ace.js';
 import 'ace-builds/src-noconflict/ext-language_tools.js';
-// import 'ace-builds/src-noconflict/snippets/snippets.js';
 
 const CDN = 'https://cdn.jsdelivr.net/npm/ace-builds@1.4.8/src-min-noconflict';
 
+// required to import for xtext-ace to be loaded correctly
 import { require, define } from "../xtext/require.js"
 
 var editorFocus = function() { 
@@ -106,11 +103,43 @@ class AceWidget extends PolymerElement {
         value: 4,
         observer: 'tabSizeChanged',
       },
-      snippets: {
-        type: String,
+      autoComplete: {
+        type: Object,
         notify: true,
       },
-      autoComplete: {
+      serviceUrl: {
+          type: String,
+          value: '/xtext-service',
+      },
+      syntaxDefinition: {
+          type: String,
+          value: 'none',
+      },
+      xtextLang: {
+            type: String,
+            value: 'none',
+      },
+      enableHighlighting: {
+          type: Object,
+          notify: true,
+      },
+      enableOccurrences: {
+          type: Object,
+          notify: true,
+      },
+      enableValidation: {
+          type: Object,
+          notify: true,
+      },
+      enableHover: {
+          type: Object,
+          notify: true,
+      },
+      enableFormatting: {
+          type: Object,
+          notify: true,
+      },
+      enableContentAssist: {
         type: Object,
         notify: true,
       },
@@ -152,50 +181,42 @@ class AceWidget extends PolymerElement {
   async connectedCallback() {
     super.connectedCallback();
 
-    let baseUrl = this.baseUrl || `${this.importPath}../../ace-builds/src-min-noconflict/`
-    let xtextBaseUrl = `../node_modules/@vaadin/flow-frontend/xtext`
-
-    // In non-minified mode, imports are parallelized, and sometimes `ext-language_tools.js` and
-    // `snippets.js` arrive before `ace.js` is ready. I am adding some tests here with dynamic imports 
-    // to fix thaty
-    // console.debug("import ace");
+//    let baseUrl = "/ace-builds/src-min-noconflict/"
+//
+//    // In non-minified mode, imports are parallelized, and sometimes `ext-language_tools.js` and
+//    // `snippets.js` arrive before `ace.js` is ready. I am adding some tests here with dynamic imports 
+//    // to fix thaty
+//    // console.debug("import ace");
 //    if (!ace) {
 //      await import(`${baseUrl}ace.js`);
 //    }
-    // console.debug("import ace ext-language-tools");
+//    // console.debug("import ace ext-language-tools");
 //    if (!ace.require("ace/ext/language_tools")) {
 //      await import(`${baseUrl}ext-language_tools.js`);
 //    }
-    
-    // use xtext functions here
-    // console.debug("import xtext");
-    // if (!xtext) {
-      // await import(`@vaadin/flow-frontend/xtext/xtext-ace.js`);
-    // }
     
     // console.debug("[ace-widget] connectedCallback")
     let div = this.$.editor;
     div.style.width = '100%';
     div.style.height = '100%';
-    // this.editor = ace.edit(div);
 
     let config = {
-      baseUrl: `${CDN}`,
-      serviceUrl: '/xtext-service',
-      xtextLang: 'mydsl',
+      // baseUrl: `${CDN}`,
+      serviceUrl: this.serviceUrl == undefined ? '/xtext-service' : this.serviceUrl,
+      xtextLang: this.xtextLang== undefined ? 'none' : this.xtextLang, // 'none', 'mydsl'
       parent: div,
-      syntaxDefinition: 'mydsl', // 'none', 'mydsl'
+      syntaxDefinition: this.syntaxDefinition == undefined ? 'none' : this.syntaxDefinition, // 'none', 'mydsl'
       // enableCors: true, // in addition cors had to be handled in server component (see ServerLauncher.xtend)
       // dirtyElement: document.getElementsByClassName(tabId),
       loadFromServer: false,
       sendFullText: true,
       // resourceId: 'some.mydsl',
-      enableHighlightingService: true,
-      enableOccurrencesService: true,
-      enableValidationService: true,
-      enableContentAssistService: true,
-      enableHoverService: true,
-      enableFormattingService: true,
+      enableHighlightingService: this.enableHighlighting == undefined ? true : this.enableHighlighting,
+      enableOccurrencesService: this.enableOccurrence == undefined ? true : this.enableOccurrence,
+      enableValidationService: this.enableValidation == undefined ? true : this.enableValidation,
+      enableContentAssistService: this.enableContentAssist == undefined ? true : this.enableContentAssist,
+      enableHoverService: this.enableHover == undefined ? true : this.enableHover,
+      enableFormattingService: this.enableFormatting == undefined ? true : this.enableFormatting,
       enableGeneratorService: false,
       enableSaveAction: false // don't want the default xtext-save action
     };
@@ -206,8 +227,7 @@ class AceWidget extends PolymerElement {
     	ace.config.set('themePath', CDN);
     	ace.config.set('workerPath', CDN);
 
-        this.editor = xtext.createEditor(config);
-    	// this.editor = ace.edit(div);
+        this.editor = xtext.createEditor(config); // regular ace would be: this.editor = ace.edit(div);
 	    this.editor.focus = editorFocus;
 
 	    this.dispatchEvent(new CustomEvent('editor-ready', { detail: {value: this.editor, oldValue: null}}));
@@ -221,23 +241,9 @@ class AceWidget extends PolymerElement {
     let editor = this.editor;
 
     this.head = document.head;
-
-
     this.injectStyle('#ace_editor\\.css');
 
-    //let baseUrl = this.baseUrl || `${this.importPath}../../ace-builds/src-min-noconflict/`
-
-//    ace.config.set('basePath', CDN);
-//    ace.config.set('modePath', CDN);
-//    ace.config.set('themePath', CDN);
-//    ace.config.set('workerPath', CDN);
-
-    this.themeChanged();
-    // this.editorValue = '';
-    
-    // editor.setOption('enableSnippets', this.enableSnippets);
-    // editor.setOption('enableBasicAutocompletion', true);
-    // editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
+    editor.setOption('enableLiveAutocompletion', this.enableLiveAutocompletion);
 
     editor.on('change', this.editorChangeAction.bind(this));
     editor.on('input', this._updatePlaceholder.bind(this));
@@ -259,53 +265,19 @@ class AceWidget extends PolymerElement {
     this.modeChanged();
     this.softtabsChanged();
     this.fontSizeChanged();
-
-    // Setting content
-
-    // Trying to get content as HTML content
-//    let htmlContent = this.innerHTML.trim();
-    // console.debug("[ace-widget] HTML content found", htmlContent);
-
-    // If we have a value in the `value` attribute, we keep it, else we use the HTML content
-//    if (this.value === undefined) {
-//      this.value = htmlContent;
-      // console.debug("[ace-widget] initializeEditor - using HTML content as value", this.value)
-//    } else {
-      // Forcing a valueChanged() call, because the initial one din't do anything as editor wasn't created yet
-      this.valueChanged();
-//    }
+    this.valueChanged();
+    
     // min and max lines
     editor.setOptions({
         minLines: this.minlines,
         maxLines: this.maxlines,
     });
 
-//    // snippets
-//    if (this.enableSnippets) {
-//      let snippetManager = ace.require('ace/snippets').snippetManager;
-//      snippetManager.register(this.snippets, 'javascript');
-//    }
-//    // autoComplete
-    
-    
-//    let langTools = ace.require('ace/ext/language_tools');
-//    let aceWidgetCompleter = {
-//      getCompletions: function(editor, session, pos, prefix, callback) {
-//        if (prefix.length === 0) {
-//          callback(null, []);
-//          return;
-//        }
-//        callback(null, self.autoComplete || []);
-//      },
-//    };
-//    langTools.addCompleter(aceWidgetCompleter);
-
     if (this.verbose) {
       console.debug('[ace-widget] After initializing: editor.getSession().getValue()',
           editor.getSession().getValue());
     }
   }
-
 
   fontSizeChanged() {
     if (this.editor == undefined) {
@@ -440,4 +412,3 @@ class AceWidget extends PolymerElement {
 
 
 window.customElements.define(AceWidget.is, AceWidget);
-
