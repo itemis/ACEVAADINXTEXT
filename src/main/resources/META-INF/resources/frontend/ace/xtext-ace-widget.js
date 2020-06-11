@@ -1,5 +1,5 @@
 /**
-This software artefact is based on: https://lostinbrittany.github.io/ace-widget/
+This software artefact is largely based on: https://github.com/ciesielskis/AceEditor
 
 original license following:
 @license MIT
@@ -39,7 +39,7 @@ var editorFocus = function() {
   this.textInput.focus();
 };
 
-class AceWidget extends PolymerElement {
+class XtextAceWidget extends PolymerElement {
   static get template() {
     return html`
       <style>
@@ -52,14 +52,14 @@ class AceWidget extends PolymerElement {
           border: 1px solid #e3e3e3;
           border-radius: 4px;
           width: 99%  !important;
-          @apply --ace-widget-editor;
+          @apply --xtext-ace-widget-editor;
         }
       </style>
       <div id="editor"></div>
     `;
   }
 
-  static get is() { return 'ace-widget'; }
+  static get is() { return 'xtext-ace-widget'; }
 
   static get properties() {
     return {
@@ -195,7 +195,7 @@ class AceWidget extends PolymerElement {
 //      await import(`${baseUrl}ext-language_tools.js`);
 //    }
     
-    // console.debug("[ace-widget] connectedCallback")
+    // console.debug("[xtext-ace-widget] connectedCallback")
     let div = this.$.editor;
     div.style.width = '100%';
     div.style.height = '100%';
@@ -231,7 +231,7 @@ class AceWidget extends PolymerElement {
 	    this.editor.focus = editorFocus;
 
 	    this.dispatchEvent(new CustomEvent('editor-ready', { detail: {value: this.editor, oldValue: null}}));
-    	// console.debug("[ace-widget] connectedCallback done, initializing")
+    	// console.debug("[xtext-ace-widget] connectedCallback done, initializing")
     	this.initializeEditor();
     });
   }
@@ -274,7 +274,7 @@ class AceWidget extends PolymerElement {
     });
 
     if (this.verbose) {
-      console.debug('[ace-widget] After initializing: editor.getSession().getValue()',
+      console.debug('[xtext-ace-widget] After initializing: editor.getSession().getValue()',
           editor.getSession().getValue());
     }
   }
@@ -307,12 +307,12 @@ class AceWidget extends PolymerElement {
   }
 
   valueChanged() {
-    // console.debug("[ace-widget] valueChanged - ",this.value)
+    // console.debug("[xtext-ace-widget] valueChanged - ",this.value)
     if (this.editor == undefined) {
       return;
     }
     if (this.editorValue != this.value) {
-      console.debug("[ace-widget] value changed")
+      console.debug("[xtext-ace-widget] value changed")
       this.editorValue = this.value;
       this.editor.clearSelection();
       this.editor.resize();
@@ -346,7 +346,7 @@ class AceWidget extends PolymerElement {
   }
 
   editorChangeAction() {
-    console.debug("[ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this.value})
+    console.debug("[xtext-ace-widget] editorChangeAction", {value: this.editorValue, oldValue: this.value})
     this.dispatchEvent(new CustomEvent('editor-content', {detail: {value: this.editorValue, oldValue: this.value}}));
   }
 
@@ -366,7 +366,7 @@ class AceWidget extends PolymerElement {
     	return;
     }
 	this.editor.setValue(value);
-	// console.debug("[ace-widget] set editorValue", this.editorValue)
+	// console.debug("[xtext-ace-widget] set editorValue", this.editorValue)
   }
 
   focus() {
@@ -377,14 +377,14 @@ class AceWidget extends PolymerElement {
     let shouldShow = !this.editor.session.getValue().length;
     let node = this.editor.renderer.emptyMessageNode;
     if (this.verbose) {
-      console.debug('[ace-widget] _updatePlaceholder', {shouldShow: shouldShow, node: node});
+      console.debug('[xtext-ace-widget] _updatePlaceholder', {shouldShow: shouldShow, node: node});
     }
     if (!shouldShow && node) {
         this.editor.renderer.scroller.removeChild(this.editor.renderer.emptyMessageNode);
         this.editor.renderer.emptyMessageNode = null;
     } else if (shouldShow && !node) {
         if (this.verbose) {
-          console.debug('[ace-widget] _updatePlaceholder - shouldShow && !node');
+          console.debug('[xtext-ace-widget] _updatePlaceholder - shouldShow && !node');
         }
         node = this.editor.renderer.emptyMessageNode = document.createElement('div');
         node.textContent = this.placeholder;
@@ -394,15 +394,15 @@ class AceWidget extends PolymerElement {
         node.style.position = 'absolute';
         node.style.color = '#aaa';
         if (this.verbose) {
-          console.debug('[ace-widget] _updatePlaceholder - node', node);
+          console.debug('[xtext-ace-widget] _updatePlaceholder - node', node);
         }
         this.editor.renderer.scroller.appendChild(node);
     }
   }
 
   /**
-   * Injects a style element into ace-widget's shadow root
-   * @param {CSSSelector} selector for an element in the same shadow tree or document as `ace-widget`
+   * Injects a style element into xtext-ace-widget's shadow root
+   * @param {CSSSelector} selector for an element in the same shadow tree or document as `xtext-ace-widget`
    */
   injectStyle(selector){
     const lightStyle = this.getRootNode().querySelector(selector) || document.querySelector(selector);
@@ -411,4 +411,4 @@ class AceWidget extends PolymerElement {
 }
 
 
-window.customElements.define(AceWidget.is, AceWidget);
+window.customElements.define(XtextAceWidget.is, XtextAceWidget);

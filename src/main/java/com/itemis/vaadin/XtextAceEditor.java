@@ -1,3 +1,6 @@
+/**
+This software artefact is largely based on: https://github.com/ciesielskis/AceEditor
+*/
 package com.itemis.vaadin;
 
 import com.vaadin.flow.component.dependency.JavaScript;
@@ -11,19 +14,16 @@ import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.shared.Registration;
 
-@Tag("ace-widget")
+@Tag("xtext-ace-widget")
 @NpmPackage(value = "requirejs", version = "2.1.22" /*"2.3.6"*/)
 @NpmPackage(value = "ace-builds", version = "1.4.8")
 @NpmPackage(value = "jquery", version = "3.5.1")
 @JavaScript("./xtext/xtext-ace.js")
 @JavaScript("./mode-mydsl.js")
-@JsModule("./ace/ace-widget.js")
+@JsModule("./ace/xtext-ace-widget.js")
 public class XtextAceEditor extends AbstractSinglePropertyField<XtextAceEditor, String>
 		implements HasSize, HasStyle, Focusable<XtextAceEditor> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 
@@ -174,9 +174,9 @@ public class XtextAceEditor extends AbstractSinglePropertyField<XtextAceEditor, 
         getElement().setAttribute("placeholder", placeholder);
     }
 
-//    /**
-//     * Returns the current value of the editor.
-//     */
+    /**
+     * Returns the current value of the editor.
+     */
     @Synchronize(value = "editor-content", property = "editorValue") // TODO: results in page reloads
     public String getValue() {
         return getElement().getProperty("editorValue");
