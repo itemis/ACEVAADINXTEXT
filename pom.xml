@@ -16,7 +16,7 @@
 		<projectVersion>1.0.0-SNAPSHOT</projectVersion>
 		<projectGroupId>org.xtext.example.mydsl</projectGroupId>
 
-        <vaadin.version>14.2.0</vaadin.version>
+        <vaadin.version>14.6.2</vaadin.version>
 
     </properties>
 
